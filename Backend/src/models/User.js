@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    imagePublicId: {
+        type: String,
+        default: '',
+    },
     address: {
         street: { type: String, default: "", },
         city: { type: String, default: "", },
@@ -51,11 +55,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
-    deliveryTimings:{
+    deliveryTimings: {
         type: String,
         default: '',
     },
-    bio:{
+    bio: {
         type: String,
         default: '',
     },
