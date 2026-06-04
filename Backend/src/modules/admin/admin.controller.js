@@ -1,6 +1,7 @@
 import User from '../../models/User.js';
 import Order from '../../models/Order.js';
 import Menu from '../../models/Menu.js';
+import cloudinary from '../../config/cloudinary.js';
 
 // GET Dashboard Stats
 export const getDashboardStats = async (req, res, next) => {
@@ -71,6 +72,10 @@ export const deleteUser = async (req, res, next) => {
                 success: false,
                 message: "Admin can't delete themselves",
             });
+        }
+        // Delete image from Cloudinary
+        if (user.imagePublicId) {
+            await cloudinary.uploader.destroy(user.imagePublicId);
         }
 
         await User.findByIdAndDelete(userId);
