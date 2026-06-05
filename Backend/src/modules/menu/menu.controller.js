@@ -9,7 +9,6 @@ export const getAllMenuItems = async (req, res, next) => {
         if (cookId) filter.cookId = cookId;
         if (mealType) filter.mealType = mealType;
         if (cuisine) filter.cuisine = { $regex: cuisine, $options: 'i' };
-        if (mealPlan) filter.mealPlan = mealPlan;
         if (category) filter.category = category;
 
         if (minPrice || maxPrice) {
@@ -81,7 +80,7 @@ export const getMyCookMenu = async (req, res, next) => {
 }
 export const createMenuItem = async (req, res, next) => {
     try {
-        const { name, description, mealType, cuisine, category, mealPlan, price } = req.body;
+        const { name, description, mealType, cuisine, category, price } = req.body;
         let image = '';
         let imagePublicId = '';
         if (req.file) {
@@ -96,7 +95,6 @@ export const createMenuItem = async (req, res, next) => {
             mealType,
             cuisine,
             category,
-            mealPlan,
             price,
             image,
             imagePublicId,
@@ -131,7 +129,6 @@ export const updateMenuItem = async (req, res, next) => {
         if (mealType) item.mealType = mealType;
         if (cuisine) item.cuisine = cuisine;
         if (category) item.category = category;
-        if (mealPlan) item.mealPlan = mealPlan;
         if (price) item.price = price;
         if (isAvailable !== undefined) item.isAvailable = isAvailable;
         if (req.file) {

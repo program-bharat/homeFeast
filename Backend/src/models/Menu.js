@@ -36,12 +36,6 @@ const menuSchema = new mongoose.Schema({
         required: true,
 
     },
-    mealPlan: {
-        type: String,
-        enum: ['daily', 'weekly', 'monthly'],
-        required: true,
-
-    },
     price: {
         type: Number,
         required: true,
