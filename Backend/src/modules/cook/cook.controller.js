@@ -1,5 +1,6 @@
 import User from '../../models/User.js';
 import Order from '../../models/Order.js';
+import Review from '../../models/Review.js';
 import cloudinary from '../../config/cloudinary.js';
 import uploadToCloudinary from '../../utils/uploadToCloudinary.js';
 
@@ -46,8 +47,17 @@ export const getCookProfile = async (req, res, next) => {
                 message: 'Cook not found',
             });
         }
-        const avgRating = "4.5";
-        const totalReviews = 12;
+        const reviews = await Review.find({
+            cookId: req.params.id,
+        });
+        const avgRating =
+            reviews.length > 0
+                ? (
+                    reviews.reduce((sum, review) => sum + review.rating, 0) /
+                    reviews.length
+                ).toFixed(1)
+                : 0;
+        const totalReviews = reviews.length;
         res.status(200).json({
             success: true,
             message: 'Cook Profile Fetched Successfully',
@@ -60,7 +70,7 @@ export const getCookProfile = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const updateCookProfile = async (req, res, next) => {
     try {

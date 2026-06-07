@@ -6,6 +6,7 @@ import userRoutes from "./modules/user/user.routes.js"
 import cookRoutes from "./modules/cook/cook.routes.js"
 import menuRoutes from "./modules/menu/menu.routes.js"
 import orderRoutes from "./modules/order/order.routes.js"
+import reviewRoutes from "./modules/review/review.routes.js";
 import adminRoutes from "./modules/admin/admin.routes.js"
 
 import errorHandler from './middlewares/error.middleware.js';
@@ -20,6 +21,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/cooks', cookRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use(errorHandler);
