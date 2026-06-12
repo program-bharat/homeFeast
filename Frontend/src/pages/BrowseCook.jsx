@@ -27,7 +27,6 @@ const BrowseCook = () => {
 
     return (
         <main className="pt-10 pb-20 px-4 md:px-8 max-w-[1280px] mx-auto min-h-screen">
-            {/* Header & Filters */}
             <header className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                     <h1
@@ -69,23 +68,25 @@ const BrowseCook = () => {
 
             {/* Cook Cards Grid */}
             {loading ? (
-                <div className="text-center py-20 text-[var(--color-text-muted)]">
-                    <p style={{ fontSize: '18px' }}>Loading cooks...</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div
+                            key={i}
+                            className="bg-white rounded-xl overflow-hidden border border-[var(--color-border)]/30 animate-pulse"
+                        >
+                            <div className="aspect-[4/3] bg-[var(--color-surface-container)]" />
+                            <div className="p-4 space-y-3">
+                                <div className="h-6 bg-[var(--color-surface-container)] rounded w-3/4" />
+                                <div className="h-4 bg-[var(--color-surface-container)] rounded w-1/2" />
+                                <div className="h-10 bg-[var(--color-surface-container)] rounded" />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filtered.map((cook, index) => (
-                        <div key={cook._id} className={`delay-${(index % 3) + 1}`}>
-                            <CookCard
-                                name={cook.name}
-                                cuisine={cook.serviceArea || cook.bio || 'Home Cook'}
-                                image={cook.image}
-                                rating={cook.avgRating || 0}
-                                reviewCount={cook.totalReviews || 0}
-                                location={cook.address?.city || 'Local'}
-                                nextDelivery={cook.deliveryTimings || 'Contact cook'}
-                            />
-                        </div>
+                    {filtered.map((cook) => (
+                        <CookCard key={cook._id} cook={cook} />
                     ))}
                     {filtered.length === 0 && (
                         <div className="col-span-full text-center py-20 text-[var(--color-text-muted)]">

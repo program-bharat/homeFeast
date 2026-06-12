@@ -1,4 +1,5 @@
 import User from '../../models/User.js';
+import Menu from '../../models/Menu.js';
 import Order from '../../models/Order.js';
 import Review from '../../models/Review.js';
 import cloudinary from '../../config/cloudinary.js';
@@ -36,35 +37,29 @@ export const getAllCooks = async (req, res, next) => {
 
 export const getCookProfile = async (req, res, next) => {
     try {
-        const cook = await User.findOne({
-            _id: req.params.id,
-            role: 'cook',
-            isApproved: true,
-        }).select('-password');
+        const cook = await User.findOne({ _id: req.params.id, role: "cook", isApproved: true, })
+            .select("-password");
         if (!cook) {
             return res.status(404).json({
                 success: false,
-                message: 'Cook not found',
+                message: "Cook not found",
             });
         }
-        const reviews = await Review.find({
-            cookId: req.params.id,
-        });
+        const reviews = await Review.find({ cookId: req.params.id, });
+        const menus = await Menu.find({ cookId: req.params.id, isAvailable: true, }).sort({ createdAt: -1 });
         const avgRating =
             reviews.length > 0
-                ? (
-                    reviews.reduce((sum, review) => sum + review.rating, 0) /
-                    reviews.length
-                ).toFixed(1)
+                ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
                 : 0;
         const totalReviews = reviews.length;
         res.status(200).json({
             success: true,
-            message: 'Cook Profile Fetched Successfully',
+            message: "Cook Profile Fetched Successfully",
             data: {
                 cook,
                 avgRating,
                 totalReviews,
+                menus,
             },
         });
     } catch (error) {

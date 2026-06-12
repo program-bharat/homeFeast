@@ -1,7 +1,6 @@
-import { Star, Clock3 } from "lucide-react";
-import FeaturedMenuCard from "./FeaturedMenuCard";
+import {  Clock3 } from "lucide-react";
 
-const MenuCard = ({ image, title, chef, rating, time, price, }) => {
+const MenuCard = ({ image, title, chef, time, price, }) => {
     console.log(title, image);
     return (
         <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-lg lg:h-full">
@@ -25,10 +24,6 @@ const MenuCard = ({ image, title, chef, rating, time, price, }) => {
                     By {chef}
                 </p>
                 <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1 text-sm font-bold text-yellow-500">
-                        <Star size={16} fill="currentColor" />
-                        {rating}
-                    </span>
                     <span className="flex items-center gap-1 text-sm text-text-muted">
                         <Clock3 size={16} />
                         {time}

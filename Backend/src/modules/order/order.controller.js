@@ -4,76 +4,55 @@ import Order from "../../models/Order.js";
 
 export const placeOrder = async (req, res, next) => {
     try {
-        let {
-            menuId,
-            orderType,
-            startDate,
-            endDate,
-            deliveryAddress,
-            note,
-        } = req.body;
-        const menu = await Menu.findById(menuId);
-        if (!menu || !menu.isAvailable) {
-            return res.status(404).json({
-                success: false,
-                message: 'Menu item not available',
-            });
+        let { items, orderType, startDate, endDate, deliveryAddress, note } = req.body;
+        if (!items || items.length === 0) {
+            return res.status(400).json({ success: false, message: 'No items provided' });
         }
-        const cook = await User.findById(menu.cookId);
-        if (!cook || !cook.isApproved) {
-            return res.status(400).json({
-                success: false,
-                message: 'Cook is not approved',
-            });
-        }
-        let totalPrice = menu.price;
+        let days = 1;
         if (orderType === 'subscription') {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            if (!startDate || !endDate) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Start date and end date are required',
-                });
-            }
-            if (new Date(startDate) < today) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Start date cannot be in the past',
-                });
-            }
-            if (new Date(startDate) >= new Date(endDate)) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'End date must be after start date',
-                });
-            }
-            const days = Math.ceil(
-                (new Date(endDate).getTime() - new Date(startDate).getTime())
-                / (1000 * 60 * 60 * 24)
+            if (!startDate || !endDate)
+                return res.status(400).json({ success: false, message: 'Start and end date required' });
+            if (new Date(startDate) < today)
+                return res.status(400).json({ success: false, message: 'Start date cannot be in the past' });
+            if (new Date(startDate) >= new Date(endDate))
+                return res.status(400).json({ success: false, message: 'End date must be after start date' });
+            days = Math.ceil(
+                (new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)
             );
-            totalPrice = menu.price * days;
+        } else {
+            startDate = new Date();
+            endDate = new Date();
         }
-        if (orderType === 'one-time') {
-            const today = new Date();
-            startDate = today;
-            endDate = today;
+        const orders = [];
+        for (const { menuId, quantity } of items) {
+            const qty = Math.max(1, parseInt(quantity) || 1);
+            const menu = await Menu.findById(menuId);
+            if (!menu || !menu.isAvailable)
+                return res.status(404).json({ success: false, message: `Menu item not available` });
+            const cook = await User.findById(menu.cookId);
+            if (!cook || !cook.isApproved)
+                return res.status(400).json({ success: false, message: 'Cook is not approved' });
+            const totalPrice = menu.price * qty * days;
+            const order = await Order.create({
+                userId: req.user.id,
+                cookId: menu.cookId,  
+                menuId,               
+                quantity: qty,        
+                orderType,
+                startDate,
+                endDate,
+                totalPrice,
+                deliveryAddress,
+                note,
+            });
+            orders.push(order);
         }
-        const order = await Order.create({
-            userId: req.user.id,
-            cookId: menu.cookId,
-            menuId,
-            orderType,
-            startDate,
-            endDate,
-            totalPrice,
-            deliveryAddress,
-            note,
-        });
         res.status(201).json({
             success: true,
             message: 'Order placed successfully',
-            data: order,
+            data: orders,
         });
     } catch (error) {
         next(error);

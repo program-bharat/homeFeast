@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { setMenus } from '../rtk/slices/menuSlice';
-import { getAllMenus } from '../api/menuAPI';
-import { notify } from '../utils/toast';
+import { setMenus } from '../rtk/slices/menuSlice.js';
+import { addToCart } from '../rtk/slices/cartSlice.js';
+import { getAllMenus } from '../api/menuAPI.js';
+import { notify } from '../utils/toast.jsx';
 import MenuCard from '../components/menu/MenuCard.jsx';
 
 const CATEGORIES = [
@@ -21,11 +23,13 @@ const MEAL_TYPES = [
 
 const BrowseMenu = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const menus = useSelector((state) => state.menu.menus);
     const [search, setSearch] = useState('');
     const [activeCategory, setActiveCategory] = useState('');
     const [activeMealType, setActiveMealType] = useState('');
     const [loading, setLoading] = useState(true);
+
     const fetchMenus = useCallback(async () => {
         try {
             setLoading(true);
@@ -36,7 +40,7 @@ const BrowseMenu = () => {
             const res = await getAllMenus(params);
             dispatch(setMenus(res.data.data || []));
         } catch (err) {
-            notify.error(err || "Failed to load meals.");
+            notify.error(err || 'Failed to load meals.');
             dispatch(setMenus([]));
         } finally {
             setLoading(false);
@@ -49,6 +53,16 @@ const BrowseMenu = () => {
         }, 400);
         return () => clearTimeout(timer);
     }, [fetchMenus]);
+
+    const handleAddToCart = (item) => {
+        dispatch(addToCart(item));
+        notify.success(`${item.name} added to cart!`);
+    };
+
+    const handleOrderNow = (item) => {
+        dispatch(addToCart(item));
+        navigate('/place-order');
+    };
 
     return (
         <main className="pt-10 pb-20">
@@ -98,8 +112,8 @@ const BrowseMenu = () => {
                                 onClick={() => setActiveCategory(cat.value)}
                                 className={`px-6 py-2.5 rounded-md transition-all active:scale-95
                                     ${isActive
-                                        ? 'bg-[var(--color-primary-dark)] hover:bg-primary text-white shadow-md'
-                                        : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
+                                        ? 'bg-[var(--color-primary-dark)] hover:bg-primary text-white shadow-md cursor-pointer'
+                                        : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] cursor-pointer'
                                     }`}
                                 style={{ fontSize: '14px', lineHeight: '16px', letterSpacing: '0.01em', fontWeight: 600 }}
                             >
@@ -119,8 +133,8 @@ const BrowseMenu = () => {
                                 onClick={() => setActiveMealType(mt.value)}
                                 className={`px-5 py-2 rounded-md transition-all active:scale-95 text-sm
                                     ${isActive
-                                        ? 'bg-[var(--color-primary-dark)] hover:bg-primary text-white shadow-sm'
-                                        : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
+                                        ? 'bg-[var(--color-primary-dark)] hover:bg-primary text-white shadow-sm cursor-pointer'
+                                        : 'bg-white text-[var(--color-text-muted)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] cursor-pointer'
                                     }`}
                                 style={{ fontSize: '14px', lineHeight: '16px', letterSpacing: '0.01em', fontWeight: 600 }}
                             >
@@ -131,9 +145,8 @@ const BrowseMenu = () => {
                 </div>
             </section>
 
-            {/* Meal Grid  */}
+            {/* Meal Grid */}
             <section className="max-w-[1280px] mx-auto px-4 md:px-8 min-h-[80vh]">
-                {/* Loading skeleton */}
                 {loading && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {Array.from({ length: 8 }).map((_, i) => (
@@ -149,23 +162,23 @@ const BrowseMenu = () => {
                     </div>
                 )}
 
-                {/* Empty state */}
                 {!loading && menus.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-24 text-center">
-                        <p
-                            className="text-[var(--color-text-muted)]"
-                            style={{ fontSize: '18px', lineHeight: '28px' }}
-                        >
+                        <p className="text-[var(--color-text-muted)]" style={{ fontSize: '18px', lineHeight: '28px' }}>
                             No meals found{search ? ` for "${search}"` : ''}. Try a different filter.
                         </p>
                     </div>
                 )}
 
-                {/* Cards grid */}
                 {!loading && menus.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {menus.map((item) => (
-                            <MenuCard key={item._id} item={item} />
+                            <MenuCard
+                                key={item._id}
+                                item={item}
+                                onAddToCart={handleAddToCart} 
+                                onOrderNow={handleOrderNow}   
+                            />
                         ))}
                     </div>
                 )}
@@ -173,4 +186,5 @@ const BrowseMenu = () => {
         </main>
     );
 };
+
 export default BrowseMenu;
