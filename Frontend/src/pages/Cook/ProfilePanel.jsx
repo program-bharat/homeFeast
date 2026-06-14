@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { User, MapPin, Edit2, Globe, Share2, CheckCircle2, AlertCircle, KeyRound, X } from 'lucide-react';
-import { getProfile, updateProfile, changePassword } from '../api/userAPI.js'; 
-import { notify } from '../utils/toast.jsx';
-import { useScrollReveal } from '../hooks/UseScrollRevel.jsx';
+import { getProfile, updateProfile, changePassword } from '../../api/userAPI.js';
+import { notify } from '../../utils/toast.jsx';
+import { useScrollReveal } from '../../hooks/UseScrollRevel.jsx';
 
 const inputCls = 'w-full bg-white border border-[var(--color-border)] rounded-lg p-3 outline-none transition-all duration-300 focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)]';
 const labelCls = 'block text-[var(--color-text-muted)] uppercase tracking-wider';
@@ -11,13 +11,13 @@ const labelStyle = { fontSize: '12px', lineHeight: '16px', fontWeight: 600 };
 
 const LiftCard = ({ children, className = '' }) => (
     <section
-        className={`reveal dealy-1 bg-white p-6 rounded-md shadow-sm border border-[var(--color-border)]/30 transition-all duration-300 hover:shadow-md ${className}`}
+        className={`reveal delay-1 bg-white p-6 rounded-md shadow-sm border border-[var(--color-border)]/30 transition-all duration-300 hover:shadow-md ${className}`}
     >
         {children}
     </section>
 );
 
-const Profile = () => {
+const ProfilePanel = () => {
     const { user } = useSelector((state) => state.auth);
     const fileInputRef = useRef(null);
 
@@ -104,6 +104,7 @@ const Profile = () => {
             if (selectedImage) {
                 formData.append('image', selectedImage);
             }
+
             await updateProfile(formData);
             await fetchUserData();
             setSelectedImage(null);
@@ -169,9 +170,9 @@ const Profile = () => {
 
     return (
         <>
-            <main className="pt-10 pb-20 max-w-[1280px] mx-auto px-4 md:px-8">
-                <header className="mb-10 flex flex-col md:flex-row items-center md:items-end gap-6" >
-                    <div className="relative group">
+            <div className="w-full pb-10">
+                <header className="mb-10 flex flex-col md:flex-row items-center md:items-end gap-6">
+                    <div className="relative group shrink-0">
                         <input
                             type="file"
                             accept="image/*"
@@ -183,10 +184,10 @@ const Profile = () => {
                             <img
                                 src={displayImage}
                                 alt={user?.name || "Profile"}
-                                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg group-hover:opacity-90 transition-opacity"
+                                className="w-32 h-32 md:w-36 md:h-36 rounded-full object-cover border-4 border-white shadow-lg group-hover:opacity-90 transition-opacity"
                             />
                         ) : (
-                            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-[var(--color-surface-container)] border-4 border-white shadow-lg flex items-center justify-center">
+                            <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-[var(--color-surface-container)] border-4 border-white shadow-lg flex items-center justify-center">
                                 <span
                                     className="text-[var(--color-primary-dark)] font-bold"
                                     style={{ fontFamily: 'var(--font-heading)', fontSize: '48px' }}
@@ -209,7 +210,7 @@ const Profile = () => {
                             className="text-[var(--color-text)] mb-1"
                             style={{
                                 fontFamily: 'var(--font-heading)',
-                                fontSize: 'clamp(32px, 4vw, 48px)',
+                                fontSize: 'clamp(28px, 3vw, 40px)',
                                 lineHeight: '1.1',
                                 letterSpacing: '-0.02em',
                                 fontWeight: 700,
@@ -217,10 +218,11 @@ const Profile = () => {
                         >
                             {form.name || 'Your Name'}
                         </h1>
+                        <p className="text-[var(--color-text-muted)] text-sm mt-1">Manage your cook profile and details</p>
                     </div>
 
                     {/* Header Actions */}
-                    <div className="flex flex-wrap gap-3 justify-center md:justify-end">
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-end shrink-0">
                         <button
                             onClick={handleDiscard}
                             disabled={isSaving}
@@ -261,137 +263,132 @@ const Profile = () => {
                     </div>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div className="flex flex-col gap-6 lg:col-span-12">
-                        <div>
-                            <LiftCard>
-                                <div className="flex items-center gap-3 mb-6">
-                                    <User size={20} className="text-[var(--color-primary)]" />
-                                    <h2
-                                        className="text-[var(--color-text)]"
-                                        style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', lineHeight: '32px', fontWeight: 600 }}
-                                    >
-                                        Personal Information
-                                    </h2>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className={labelCls} style={labelStyle}>Full Name</label>
-                                        <input
-                                            name="name"
-                                            type="text"
-                                            value={form.name}
-                                            onChange={handleFormChange}
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className={labelCls} style={labelStyle}>Email Address</label>
-                                        <input
-                                            name="email"
-                                            type="email"
-                                            value={form.email}
-                                            readOnly
-                                            className={`${inputCls} bg-gray-50 cursor-not-allowed`}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2 md:col-span-2">
-                                        <label className={labelCls} style={labelStyle}>Phone Number</label>
-                                        <input
-                                            name="phone"
-                                            type="tel"
-                                            value={form.phone}
-                                            onChange={handleFormChange}
-                                            placeholder="+1 (555) 000-0000"
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                </div>
-                            </LiftCard>
+                <div className="grid grid-cols-1 gap-6">
+                    <LiftCard>
+                        <div className="flex items-center gap-3 mb-6">
+                            <User size={20} className="text-[var(--color-primary)]" />
+                            <h2
+                                className="text-[var(--color-text)]"
+                                style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', lineHeight: '32px', fontWeight: 600 }}
+                            >
+                                Personal Information
+                            </h2>
                         </div>
-                        <div>
-                            <LiftCard>
-                                <div className="flex items-center gap-3 mb-6">
-                                    <MapPin size={20} className="text-[var(--color-primary)]" />
-                                    <h2
-                                        className="text-[var(--color-text)]"
-                                        style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', lineHeight: '32px', fontWeight: 600 }}
-                                    >
-                                        Delivery Address
-                                    </h2>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-                                    <div className="space-y-2 md:col-span-6">
-                                        <label className={labelCls} style={labelStyle}>Street Address</label>
-                                        <input
-                                            name="street"
-                                            type="text"
-                                            value={address.street}
-                                            onChange={handleAddressChange}
-                                            placeholder="123 Culinary Drive"
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2 md:col-span-3">
-                                        <label className={labelCls} style={labelStyle}>City</label>
-                                        <input
-                                            name="city"
-                                            type="text"
-                                            value={address.city}
-                                            onChange={handleAddressChange}
-                                            placeholder="Brooklyn"
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2 md:col-span-2">
-                                        <label className={labelCls} style={labelStyle}>State</label>
-                                        <input
-                                            name="state"
-                                            type="text"
-                                            value={address.state}
-                                            onChange={handleAddressChange}
-                                            placeholder="NY"
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2 md:col-span-1">
-                                        <label className={labelCls} style={labelStyle}>ZIP</label>
-                                        <input
-                                            name="pincode"
-                                            type="text"
-                                            value={address.pincode}
-                                            onChange={handleAddressChange}
-                                            placeholder="11232"
-                                            className={inputCls}
-                                            style={{ fontSize: '16px', lineHeight: '24px' }}
-                                        />
-                                    </div>
-                                    <div className="md:col-span-6 flex justify-end mt-4">
-                                        <button
-                                            onClick={handleSave}
-                                            disabled={isSaving}
-                                            className="px-6 py-2.5 rounded-md bg-[var(--color-primary)] text-white shadow-md hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-wait min-w-[140px] flex justify-center"
-                                            style={{ fontSize: '14px', lineHeight: '16px', letterSpacing: '0.01em', fontWeight: 600 }}
-                                        >
-                                            {isSaving ? 'Saving...' : 'Save Address'}
-                                        </button>
-                                    </div>
-                                </div>
-                            </LiftCard>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className={labelCls} style={labelStyle}>Full Name</label>
+                                <input
+                                    name="name"
+                                    type="text"
+                                    value={form.name}
+                                    onChange={handleFormChange}
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className={labelCls} style={labelStyle}>Email Address</label>
+                                <input
+                                    name="email"
+                                    type="email"
+                                    value={form.email}
+                                    readOnly
+                                    className={`${inputCls} bg-gray-50 cursor-not-allowed`}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="space-y-2 md:col-span-2">
+                                <label className={labelCls} style={labelStyle}>Phone Number</label>
+                                <input
+                                    name="phone"
+                                    type="tel"
+                                    value={form.phone}
+                                    onChange={handleFormChange}
+                                    placeholder="+1 (555) 000-0000"
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    </LiftCard>
+
+                    <LiftCard>
+                        <div className="flex items-center gap-3 mb-6">
+                            <MapPin size={20} className="text-[var(--color-primary)]" />
+                            <h2
+                                className="text-[var(--color-text)]"
+                                style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', lineHeight: '32px', fontWeight: 600 }}
+                            >
+                                Kitchen Address
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+                            <div className="space-y-2 md:col-span-6">
+                                <label className={labelCls} style={labelStyle}>Street Address</label>
+                                <input
+                                    name="street"
+                                    type="text"
+                                    value={address.street}
+                                    onChange={handleAddressChange}
+                                    placeholder="123 Culinary Drive"
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="space-y-2 md:col-span-3">
+                                <label className={labelCls} style={labelStyle}>City</label>
+                                <input
+                                    name="city"
+                                    type="text"
+                                    value={address.city}
+                                    onChange={handleAddressChange}
+                                    placeholder="Brooklyn"
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="space-y-2 md:col-span-2">
+                                <label className={labelCls} style={labelStyle}>State</label>
+                                <input
+                                    name="state"
+                                    type="text"
+                                    value={address.state}
+                                    onChange={handleAddressChange}
+                                    placeholder="NY"
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="space-y-2 md:col-span-1">
+                                <label className={labelCls} style={labelStyle}>ZIP</label>
+                                <input
+                                    name="pincode"
+                                    type="text"
+                                    value={address.pincode}
+                                    onChange={handleAddressChange}
+                                    placeholder="11232"
+                                    className={inputCls}
+                                    style={{ fontSize: '16px', lineHeight: '24px' }}
+                                />
+                            </div>
+                            <div className="md:col-span-6 flex justify-end mt-4">
+                                <button
+                                    onClick={handleSave}
+                                    disabled={isSaving}
+                                    className="px-6 py-2.5 rounded-md bg-[var(--color-primary)] text-white shadow-md hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-wait min-w-[140px] flex justify-center"
+                                    style={{ fontSize: '14px', lineHeight: '16px', letterSpacing: '0.01em', fontWeight: 600 }}
+                                >
+                                    {isSaving ? 'Saving...' : 'Save Address'}
+                                </button>
+                            </div>
+                        </div>
+                    </LiftCard>
                 </div>
-            </main>
+            </div>
 
             {/* Change Password Modal */}
             {isPasswordModalOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fadeIn">
                     <div className="bg-white w-full max-w-md rounded-md shadow-xl border border-[var(--color-border)]/50 overflow-hidden transform transition-all scale-100">
                         <div className="flex items-center justify-between p-5 border-b border-[var(--color-border)]/50">
                             <div className="flex items-center gap-2.5">
@@ -484,4 +481,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default ProfilePanel;

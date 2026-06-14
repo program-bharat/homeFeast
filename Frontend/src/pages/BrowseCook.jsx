@@ -59,7 +59,7 @@ const BrowseCook = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by name or cuisine"
-                            className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] focus:outline-none"
+                            className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-md focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] focus:outline-none"
                             style={{ fontSize: '16px', lineHeight: '24px', color: 'var(--color-text)' }}
                         />
                     </div>
@@ -72,7 +72,7 @@ const BrowseCook = () => {
                     {Array.from({ length: 6 }).map((_, i) => (
                         <div
                             key={i}
-                            className="bg-white rounded-xl overflow-hidden border border-[var(--color-border)]/30 animate-pulse"
+                            className="bg-white rounded-md overflow-hidden border border-[var(--color-border)]/30 animate-pulse"
                         >
                             <div className="aspect-[4/3] bg-[var(--color-surface-container)]" />
                             <div className="p-4 space-y-3">

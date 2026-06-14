@@ -150,7 +150,7 @@ const BrowseMenu = () => {
                 {loading && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {Array.from({ length: 8 }).map((_, i) => (
-                            <div key={i} className="bg-white rounded-xl overflow-hidden border border-[var(--color-border)]/30 animate-pulse">
+                            <div key={i} className="bg-white rounded-md overflow-hidden border border-[var(--color-border)]/30 animate-pulse">
                                 <div className="aspect-[4/3] bg-[var(--color-surface-container)]" />
                                 <div className="p-4 space-y-3">
                                     <div className="h-6 bg-[var(--color-surface-container)] rounded w-3/4" />
@@ -176,8 +176,8 @@ const BrowseMenu = () => {
                             <MenuCard
                                 key={item._id}
                                 item={item}
-                                onAddToCart={handleAddToCart} 
-                                onOrderNow={handleOrderNow}   
+                                onAddToCart={handleAddToCart}
+                                onOrderNow={handleOrderNow}
                             />
                         ))}
                     </div>

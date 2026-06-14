@@ -13,7 +13,11 @@ const Home = () => {
 
     useEffect(() => {
         getAllCooks()
-            .then((res) => setFeaturedCooks(res.data.data.slice(0, 4)))
+            .then((res) => {
+                const allCooks = res.data.data;
+                const randomCooks = [...allCooks].sort(() => 0.5 - Math.random());
+                setFeaturedCooks(randomCooks.slice(0, 4));
+            })
             .catch(() => notify.error('Failed to load cooks'));
     }, []);
     const menu = [

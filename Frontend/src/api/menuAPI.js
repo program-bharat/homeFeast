@@ -1,6 +1,5 @@
 import axiosInstance from "./axiosInstance";
 
-// Public
 export const getAllMenus = (params) => {
     return axiosInstance.get("/menu", { params });
 };
@@ -10,23 +9,22 @@ export const getMenuDetails = (id) => {
 };
 
 export const getCookMenus = (cookId) => {
-    return axiosInstance.get(`/menu/cook/${cookId}`);
+    return axiosInstance.get("/menu", { params: { cookId } });
 };
 
-// Cook
 export const getMyMenus = () => {
-    return axiosInstance.get("/menu/my-menus");
+    return axiosInstance.get("/menu/cook/my-menu");
 };
 
 export const createMenu = (data) => {
     return axiosInstance.post("/menu", data, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
 
 export const updateMenu = (id, data) => {
     return axiosInstance.put(`/menu/${id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
 
@@ -35,5 +33,5 @@ export const deleteMenu = (id) => {
 };
 
 export const toggleMenuAvailability = (id) => {
-    return axiosInstance.put(`/menu/${id}/availability`);
+    return axiosInstance.put(`/menu/${id}/toggle`);
 };

@@ -130,14 +130,14 @@ const MyOrders = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-center gap-6 min-w-max mb-10">
+                <div className="flex overflow-x-auto whitespace-nowrap gap-3 sm:gap-6 w-full pb-2 mb-8 sm:mb-10 sm:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {tabs.map((tab) => (
                         <button
                             key={tab.key}
                             onClick={() => handleTabSwitch(tab.key)}
-                            className={`relative px-4 py-4 text-[14px] leading-[16px] font-semibold transition-all
-                            ${activeTab === tab.key
-                                    ? "text-[#ab3500] after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:right-0 after:h-[2px] after:bg-[#ab3500]"
+                            className={`relative px-3 py-3 sm:px-4 sm:py-4 text-[13px] sm:text-[14px] leading-[16px] font-semibold transition-all shrink-0
+                                ${activeTab === tab.key
+                                    ? "text-[#ab3500] after:content-[''] after:absolute after:bottom-0 sm:after:bottom-[-2px] after:left-0 after:right-0 after:h-[2px] after:bg-[#ab3500]"
                                     : "text-[#594139] hover:text-[#ab3500]"
                                 }`}
                         >

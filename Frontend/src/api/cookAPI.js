@@ -1,33 +1,18 @@
 import axiosInstance from "./axiosInstance";
 
-// Public
-export const getAllCooks = (params) => {
-    return axiosInstance.get("/cooks", { params });
-};
+export const getAllCooks = (params) => axiosInstance.get("/cooks", { params });
+export const getCookDetails = (id) => axiosInstance.get(`/cooks/${id}`);
 
-export const getCookDetails = (id) => {
-    return axiosInstance.get(`/cooks/${id}`);
-};
-
-// Cook
-export const getCookProfile = () => {
-    return axiosInstance.get("/cooks/profile/me");
-};
-
-export const updateCookProfile = (data) => {
-    return axiosInstance.put("/cooks/profile", data, {
+export const updateCookProfile = (data) =>
+    axiosInstance.put("/cooks/profile", data, {
         headers: { "Content-Type": "multipart/form-data" },
     });
-};
 
-export const getCookOrders = () => {
-    return axiosInstance.get("/cooks/orders");
-};
+export const getCookOrders = () => axiosInstance.get("/cooks/dashboard/orders");
 
-export const updateOrderStatus = (id, data) => {
-    return axiosInstance.put(`/cooks/orders/${id}`, data);
-};
+export const updateOrderStatus = (id, data) =>
+    axiosInstance.put(`/cooks/dashboard/orders/${id}`, data);
 
-export const getCookEarnings = () => {
-    return axiosInstance.get("/cooks/earnings");
-};
+export const getCookEarnings = () => axiosInstance.get("/cooks/dashboard/earnings");
+
+export const getCookDashboardStats = () => axiosInstance.get("/cooks/dashboard/stats");

@@ -77,7 +77,7 @@ const CookProfile = () => {
                     {Array.from({ length: 8 }).map((_, i) => (
                         <div
                             key={i}
-                            className="bg-white rounded-xl overflow-hidden border border-[var(--color-border)]/30 animate-pulse"
+                            className="bg-white rounded-md overflow-hidden border border-[var(--color-border)]/30 animate-pulse"
                         >
                             <div className="aspect-[4/3] bg-[var(--color-surface-container)]" />
                             <div className="p-4 space-y-3">

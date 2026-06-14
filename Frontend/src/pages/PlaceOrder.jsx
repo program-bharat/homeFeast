@@ -164,7 +164,7 @@ const PlaceOrder = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 items-start">
                     <div className="flex flex-col gap-6">
                         <section
-                            className="rounded-xl p-6"
+                            className="rounded-md p-6"
                             style={{
                                 background: 'white',
                                 border: '1px solid var(--color-border)',
@@ -266,7 +266,7 @@ const PlaceOrder = () => {
                         </section>
 
                         <section
-                            className="rounded-xl p-6"
+                            className="rounded-md p-6"
                             style={{
                                 background: 'white',
                                 border: '1px solid var(--color-border)',
@@ -362,7 +362,7 @@ const PlaceOrder = () => {
                         </section>
 
                         <section
-                            className="rounded-xl p-6"
+                            className="rounded-md p-6"
                             style={{
                                 background: 'white',
                                 border: '1px solid var(--color-border)',
@@ -449,7 +449,7 @@ const PlaceOrder = () => {
                         </section>
 
                         <section
-                            className="rounded-xl p-6"
+                            className="rounded-md p-6"
                             style={{
                                 background: 'white',
                                 border: '1px solid var(--color-border)',
@@ -489,7 +489,7 @@ const PlaceOrder = () => {
 
                     <aside className="lg:sticky lg:top-28">
                         <div
-                            className="rounded-xl p-6"
+                            className="rounded-md p-6"
                             style={{
                                 background: 'white',
                                 border: '1px solid var(--color-border)',

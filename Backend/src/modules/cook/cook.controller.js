@@ -176,7 +176,7 @@ export const getCookEarnings = async (req, res, next) => {
             .populate('menuId', 'name price');
         const totalEarnings = orders
             .filter(order => ['accepted', 'delivered'].includes(order.status))
-            .reduce((sum, order) => sum + order.totalPrice, 0);
+            .reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
 
         const totalOrders = orders.length;
         const totalCompletedOrders = orders.filter(order => ['accepted', 'delivered'].includes(order.status)).length;
@@ -206,3 +206,29 @@ export const getCookEarnings = async (req, res, next) => {
         next(error);
     }
 }
+
+export const getCookDashboardStats = async (req, res, next) => {
+    try {
+        const cookId = req.user.id;
+        const orders = await Order.find({ cookId });
+        const pendingCount = orders.filter(order => order.status === 'pending').length;
+        const acceptedCount = orders.filter(order => order.status === 'accepted').length;
+        const deliveredCount = orders.filter(order => order.status === 'delivered').length;
+        const totalRevenue = orders
+            .filter(order => order.status === 'delivered')
+            .reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
+        res.status(200).json({
+            success: true,
+            message: 'Dashboard stats fetched successfully',
+            data: {
+                pendingCount,
+                acceptedCount,
+                deliveredCount,
+                totalRevenue,
+                totalOrders: orders.length
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};

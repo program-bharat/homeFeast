@@ -1,3 +1,4 @@
+// Backend/src/modules/menu/menu.routes.js
 import express from 'express';
 import authMiddleware from '../../middlewares/auth.middleware.js'
 import authorize from '../../middlewares/role.middleware.js'
@@ -15,8 +16,9 @@ import {
 const router = express.Router();
 
 router.get('/', getAllMenuItems);
-router.get('/:id', getMenuItemById);
 router.get('/cook/my-menu', authMiddleware, authorize('cook'), getMyCookMenu);
+
+router.get('/:id', getMenuItemById);
 router.post('/', authMiddleware, authorize('cook'), upload.single('image'), createMenuItem);
 router.put('/:id', authMiddleware, authorize('cook'), upload.single('image'), updateMenuItem);
 router.delete('/:id', authMiddleware, authorize('cook'), deleteMenuItem);

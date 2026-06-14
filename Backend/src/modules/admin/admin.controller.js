@@ -168,7 +168,8 @@ export const getAllOrders = async (req, res, next) => {
         const orders = await Order.find()
             .populate('userId', 'name email')
             .populate('cookId', 'name email')
-            .populate('menuId', 'name price');
+            .populate('menuId', 'name price')
+            .sort({ createdAt: -1 })
 
         res.status(200).json({
             success: true,

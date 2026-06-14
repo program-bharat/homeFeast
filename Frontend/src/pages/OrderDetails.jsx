@@ -86,7 +86,7 @@ const OrderDetails = () => {
                     <div className="lg:col-span-8 space-y-6">
                         {/* Cook Information */}
                         <section
-                            className="rounded-xl p-6 shadow-sm"
+                            className="rounded-md p-6 shadow-sm"
                             style={{ background: 'white', border: '1px solid var(--color-border)' }}
                         >
                             <div className="flex items-center justify-between mb-4">
@@ -145,7 +145,7 @@ const OrderDetails = () => {
 
                         {/* Order Items */}
                         <section
-                            className="rounded-xl p-6 shadow-sm"
+                            className="rounded-md p-6 shadow-sm"
                             style={{ background: 'white', border: '1px solid var(--color-border)' }}
                         >
                             <h2
@@ -202,7 +202,7 @@ const OrderDetails = () => {
 
                     <div className="lg:col-span-4 space-y-6">
                         <section
-                            className="rounded-xl p-6 shadow-sm"
+                            className="rounded-md p-6 shadow-sm"
                             style={{ background: 'white', border: '1px solid var(--color-border)' }}
                         >
                             <h2

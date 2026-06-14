@@ -262,7 +262,7 @@ const Register = () => {
                                         className="sr-only peer"
                                     />
                                     <div
-                                        className={`p-4 rounded-xl border-2 flex flex-col items-center text-center gap-2 transition-all
+                                        className={`p-4 rounded-md border-2 flex flex-col items-center text-center gap-2 transition-all
                                             ${role === 'customer'
                                                 ? 'border-[var(--color-primary)] bg-[#ffdbd0]'
                                                 : 'border-[var(--color-border)] bg-white group-hover:bg-[var(--color-surface-container)]'
@@ -282,7 +282,7 @@ const Register = () => {
                                         className="sr-only peer"
                                     />
                                     <div
-                                        className={`p-4 rounded-xl border-2 flex flex-col items-center text-center gap-2 transition-all
+                                        className={`p-4 rounded-md border-2 flex flex-col items-center text-center gap-2 transition-all
                                             ${role === 'cook'
                                                 ? 'border-[var(--color-primary)] bg-[#ffdbd0]'
                                                 : 'border-[var(--color-border)] bg-white group-hover:bg-[var(--color-surface-container)]'
@@ -346,7 +346,7 @@ const Register = () => {
                         <div className="pt-4">
                             <button
                                 type="submit"
-                                className="w-full bg-[var(--color-primary-dark)] hover:bg-primary text-white py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+                                className="w-full bg-[var(--color-primary-dark)] hover:bg-primary text-white py-4 rounded-md shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
                                 style={{ fontSize: '14px', lineHeight: '16px', letterSpacing: '0.01em', fontWeight: 600 }}
                             >
                                 Join HomeFeast
