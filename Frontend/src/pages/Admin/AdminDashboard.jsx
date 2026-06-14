@@ -14,7 +14,7 @@ import {
     deleteUser,
 } from '../../api/adminAPI.js';
 
-import SideBar from '../../components/layout/SideBar.jsx';
+import SideBar from '../../components/Layout/SideBar.jsx';
 import { ADMIN_NAV } from '../../components/Layout/navigation.js';
 
 import AdminOverviewPanel from './AdminOverviewPanel.jsx';

@@ -10,7 +10,7 @@ import { updateOrderStatus, getCookDashboardStats } from '../../api/cookAPI.js';
 import { getOrders } from '../../api/orderAPI.js';
 import { getMyMenus } from '../../api/menuAPI.js';
 
-import SideBar from '../../components/layout/SideBar.jsx';
+import SideBar from '../../components/Layout/SideBar.jsx';
 import { COOK_NAV } from '../../components/Layout/navigation.js';
 
 import OverviewPanel from './OverViewPanel.jsx';

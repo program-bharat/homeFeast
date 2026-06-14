@@ -6,7 +6,7 @@ import orderReducer from "./slices/orderSlice.js";
 import reviewReducer from "./slices/reviewSlice.js";
 import adminReducer from "./slices/adminSlice.js";
 import cartReducer from './slices/cartSlice.js';
-import dashboardReducer from './slices/dashboardSlice';
+import dashboardReducer from './slices/dashboardSlice.js';
 
 export const store = configureStore({
     reducer: {

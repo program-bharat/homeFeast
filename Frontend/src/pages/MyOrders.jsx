@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ShoppingBag, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getOrders } from "../api/orderAPI";
+import { getOrders } from "../api/orderAPI.js";
 import OrderCard from "../components/order/OrderCard.jsx"
 
 const MyOrders = () => {
